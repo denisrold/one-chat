@@ -6,19 +6,24 @@ const socket = io("/")
 // ver configracion de vite.config y documentacion en google para ver otra forma de uso 
 
 function App() {
-  const [message,setMessage] = useState('')
+  const [message,setMessage] = useState('');
+  const [messages,setMessages] = useState([]);
 
   const handleSubmit=(e)=>{
 e.preventDefault();
-socket.emit('message',message)
+setMessage([...messages,message]);
+socket.emit('message',message);
   }
 
   useEffect(()=>{
-    socket.on('message',message=>{
-      console.log(message)
+    socket.on('message',reciveMessage);
+
+   return()=>{ 
+    socket.off('message',reciveMessage);
     }
-    )
-  })
+  },[])
+
+  const reciveMessage = (message) => setMessages((state) => [...state,message]);  
 
   return (
    <div>
@@ -28,6 +33,13 @@ socket.emit('message',message)
     <button>
       Send
     </button>
+    <ul>
+      {messages.map((m,i)=>(
+      <li key={i}>
+        {m.from}:{m.body}
+        </li>
+      ))}
+    </ul>
   </form>
    </div>
   )
