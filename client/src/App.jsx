@@ -11,7 +11,11 @@ function App() {
 
   const handleSubmit=(e)=>{
 e.preventDefault();
-setMessage([...messages,message]);
+const newMessage = {
+body:message,
+from:'Me'
+}
+setMessages([...messages,newMessage]);
 socket.emit('message',message);
   }
 
