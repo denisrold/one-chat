@@ -30,7 +30,7 @@ socket.emit('message',message);
   const reciveMessage = (message) => setMessages((state) => [...state,message]);  
 
   return (
-   <div>
+   <div className='h-screen flex items-center justify-center bg-zinc-800' >
   <form onSubmit={handleSubmit}>
     <input type='text' placeholder='Write your message...'
     onChange={e=>setMessage(e.target.value)} />
