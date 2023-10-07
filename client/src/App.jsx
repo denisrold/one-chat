@@ -11,13 +11,15 @@ function App() {
 
   const handleSubmit=(e)=>{
 e.preventDefault();
+const inputMessage = document.getElementById('inputMessage');
 const newMessage = {
-body:message,
-from:'Me'
+  body:message,
+  from:'Me'
 }
 setMessages([...messages,newMessage]);
 socket.emit('message',message);
-  }
+inputMessage.value = ''; 
+}
 
   useEffect(()=>{
     socket.on('message',reciveMessage);
@@ -30,20 +32,23 @@ socket.emit('message',message);
   const reciveMessage = (message) => setMessages((state) => [...state,message]);  
 
   return (
-   <div className='h-screen flex items-center justify-center bg-zinc-800' >
-  <form onSubmit={handleSubmit}>
-    <input type='text' placeholder='Write your message...'
+   <div className='h-screen flex items-center justify-center bg-slate-600' >
+  <form className='space-x-3' onSubmit={handleSubmit}>
+    <div className='w-fit h-fit bg-slate-800 rounded-md space-x-3 shadow-xl shadow-slate-900  p-8 justify-center'>
+    <input id='inputMessage' className='p-2 outline-0 rounded-md border  shadow-md shadow-slate-900 w-96' type='text' placeholder='Write your message...'
     onChange={e=>setMessage(e.target.value)} />
-    <button>
+    <button className='px-3 py-2 border border-1 rounded-md font-semibold text-white shadow-slate-900 border-blue-700 shadow-md bg-blue-700 hover:bg-blue-600'>
       Send
     </button>
-    <ul>
+    <ul className='mt-6'>
       {messages.map((m,i)=>(
-      <li key={i}>
-        {m.from}:{m.body}
+      <li key={i} className=' justify-center font-semibold text-white box-border  break-words max-w-sm'>
+        {m.from}: {m.body}
         </li>
       ))}
     </ul>
+    </div>
+ 
   </form>
    </div>
   )
